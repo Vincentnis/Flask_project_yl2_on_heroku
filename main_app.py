@@ -265,7 +265,8 @@ def reqister():
                     json={'surname': form.surname.data, 'name': form.name.data,
                           'age': form.age.data, 'speciality': form.speciality.data,
                           'email': form.email.data, 'about': form.about.data,
-                          'password': form.password.data}).json()
+                          'password': form.password.data})
+        print(resp.__dict__)
         if resp.get('success'):  # если все успешно ==> переходим на страницу авторизации
             return redirect('/login')
         else:
