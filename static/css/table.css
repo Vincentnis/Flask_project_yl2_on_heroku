@@ -1,0 +1,28 @@
+.my_table {
+	width: 100%;
+    margin-bottom: 1rem;
+	text-align: center;
+}
+th {
+	background: lightgray;
+	font-weight: normal;
+	border-width: 0 1px 1px 0;
+}
+table td{
+	background: #D8E6F3;
+	padding: .75rem;
+	vertical-align: inherit;
+	border-top: 1px solid #dee2e6;
+}
+td:first-child, th:first-child {
+	text-align: left;
+}
+.td_finished {
+	background: #ceffce;
+}
+.td_not_finished {
+	background: #FFE6EE;
+}
+h2 {
+	text-align: center;
+}

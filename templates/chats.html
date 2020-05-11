@@ -1,0 +1,19 @@
+{% extends "main_template.html" %}
+
+
+{% block content %}
+<h1>Chats</h1>
+<style>.from-who {color: red;}</style>
+{% for user in users%}
+<div class="col-md6 border rounded">
+    <h2>Chating with: <a href='open_chat/{{user.id}}' class="alert-link">{{user.surname}} {{user.name}}</a></h2>
+    <div>
+		{% if messages[loop.index0].sender == current_user.id %}
+        <p><a class="from-who disabled" href="#">You:</a>{{messages[loop.index0].text}}</p>
+		{% else %}
+		<p><a class="from-who" href="#">To you:</a>{{messages[loop.index0].text}}</p>
+		{% endif %}
+    </div>
+</div>
+{% endfor %}
+{% endblock %}

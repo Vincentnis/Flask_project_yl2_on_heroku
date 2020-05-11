@@ -1,0 +1,31 @@
+{% extends "main_template.html" %}
+
+{% block content %}
+<h2>Jobs</h2>
+<link rel='stylesheet' type="text/css" href='/static/css/table.css' />
+{% for job in jobs %}
+	<h4>Job # {{loop.index}}</h4>
+	<table class='my_table'>
+		<tr>
+			<th width='20%'>Header</th>
+			<th width='20%'>Author</th>
+			<th width='30%'>Requirements</th>
+			<th width='30%'>Description</th>
+		</tr>
+		<tr>
+			<td>{{job.header}}</td>
+			<td><a href='profile/{{authors[loop.index0].id}}' class="alert-link">{{authors[loop.index0].surname}} {{authors[loop.index0].name}}</a></td>
+			<td>{{job.requirements}}</td>
+			<td>{{job.description}}</td>
+		</tr>
+	</table>
+	<style>.custom_navbar {justify-content: normal;} nav .badge-pill {margin-right: 0.5rem;}</style>
+	<nav class="navbar custom_navbar">{% for category in job.categories %}<span class="badge badge-pill badge-primary" >{{ category.name }}</span>{% endfor %}</nav>
+	{% if current_user.is_authenticated and current_user == job.user %}
+    <div>
+        <a href="/edit_job/{{ job.id }}" class="btn btn-warning">Edit Job</a>
+        <a href="/delete_job/{{ job.id }}" class="btn btn-danger">Delete job</a>
+    </div>
+	{% endif %}
+{% endfor %}
+{% endblock %}

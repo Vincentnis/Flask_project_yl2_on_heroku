@@ -1,0 +1,50 @@
+{% extends "main_template.html" %}
+
+
+{% block content %}
+<h1>{{title}}</h1>
+<form action="" method="post">
+    {{ form.hidden_tag() }}
+    {{ form.csrf_token }}
+    <p>
+        {{ form.header.label }}<br>
+        {{ form.header(class="form-control", placeholder="header") }}<br>
+        {% for error in form.header.errors %}
+            <p class="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.requirements.label }}<br>
+        {{ form.requirements(class="form-control") }}<br>
+        {% for error in form.requirements.errors %}
+            <p class="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+    </p>
+	<p>
+        {{ form.description.label }}<br>
+        {{ form.description(class="form-control") }}<br>
+        {% for error in form.description.errors %}
+            <p class="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+    </p>
+    {% for subfield in form.select %}
+	<p>{{ subfield()}} {{ subfield.label}}</p>
+	{% endfor %}
+	<p>{{ form.add_category.label }}</p>
+	<div class="input-group mb-3">
+	  <div class="input-group-prepend">
+		<div class="input-group-text">
+		  {{ form.add_category() }}
+		</div>
+	  </div>
+	  {{ form.name_of_category() }}
+	</div>
+    <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+</form>
+{% endblock %}

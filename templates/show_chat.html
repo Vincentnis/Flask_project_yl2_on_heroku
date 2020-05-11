@@ -1,0 +1,35 @@
+{% extends "main_template.html" %}
+
+
+{% block content %}
+<form method="post" action="">
+	{{ form.csrf_token }}
+	<link rel='stylesheet' type="text/css" href='/static/css/chat.css' />
+	<link rel='stylesheet' type="text/css" href='/static/css/for_space_between.css' />
+	<h1>Chat with <a href='/../profile/{{receiver.id}}' class="alert-link">{{receiver.surname}} {{receiver.name}}</a></h1>
+	<div class="scrolling">
+		{% for message in messages %}
+			{% if message[1] == current_user.id %}
+			<div class="message_form">
+				<p>
+					<a class="date-form">{{message[4]}}</a><br>
+					<a href='/../edit_message/{{message[0]}}' class="alert-link">Edit</a>
+					<a href='/../delete_message/{{message[0]}}' class="alert-link">Delete</a>
+				</p>
+				<a class="from-me message">{{message[3]}}</a>
+			</div >
+			{% else %}
+			<p class="message_form">
+				<a class="from-them message">{{message[3]}}</a>
+				<a class="date-form">{{message[4]}}</a>
+			</p>
+			{% endif %}
+		{% endfor %}
+	</div>
+	<nav class="navbar navbar-light">
+		<form class="form-inline">
+			<p class="message-text">{{form.text(class="form-control mr-sm-2", type="message", placeholder="Message")}}</p>
+			<p>{{ form.submit(type="submit", class="btn btn-outline-success") }}</p>
+	</nav>
+</form>
+{% endblock %}

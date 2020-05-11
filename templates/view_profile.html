@@ -1,0 +1,40 @@
+{% extends "main_template.html" %}
+
+
+{% block content %}
+<h1>User profile</h1>
+<form method="get" action="">
+    {{ form.csrf_token }}
+	<p>User photo:</p>
+	<img src="{{ file }}" alt='Sorry, no image here'/>
+    <p>
+        User surname and name:<br>
+        {{ form.surname.data }} {{ form.name.data }}<br>
+    </p>
+	<p>
+        User email:<br>
+        {{ form.email.data }}<br>
+    </p>
+    <p>
+        User age:<br>
+        {{ form.age.data }}<br>
+	</p>
+    <p>
+        User speciality:<br>
+        {{ form.speciality.data }}<br>
+	</p>
+	<style>.custom_navbar {padding: .5rem 0px;}</style>
+	<nav class="custom_navbar navbar navbar-light">
+		<p>
+			User description:<br>
+			{{ form.about.data }}
+		</p>
+		<p>
+			{% if current_user.is_authenticated and current_user.id != id %}
+			<a class="btn btn-primary" href="/open_chat/{{id}}">Send message to {{ form.surname.data }} {{ form.name.data }}</a>
+			{% endif %}
+			<a class="btn btn-danger" href="/">Close</a>
+		</p>
+	</nav>
+</form>
+{% endblock %}

@@ -1,0 +1,48 @@
+@use postcss-nested;
+form {
+	font-family: "Helvetica Neue", Helvetica, sans-serif;
+	font-size: 20px;
+	font-weight: normal;
+	position: relative;
+	max-width: 800px;
+	margin: 50px auto;
+	display: flex;
+	flex-direction: column;
+
+}
+
+.message{
+  max-width: 455px;
+  word-wrap: break-word;
+  margin-bottom: 24px;
+  line-height: 24px;
+  position:relative;
+	padding:10px 20px;
+  border-radius:25px;
+}
+.from-me {
+	color:white; 
+	background:#0B93F6;
+	align-self: flex-end;
+}
+.message_form  {justify-content: space-between;
+			   display: flex;}
+.from-them {
+	background:#E5E5EA;
+	color:black;
+	align-self: flex-start;
+}
+.scrolling {
+	max-width: 800px;
+	width: 800px;
+	min-height: 300px;
+	max-height: 600px;
+	margin: 0.5rem auto;
+	display: flex;
+	flex-direction: column; /* высота нашего блока */
+	background: #fff; /* цвет фона, белый */
+	border: 1px solid #C1C1C1; /* размер и цвет границы блока */
+	overflow: auto;
+}
+.message-text {width: 80%;}
+.date-form {padding-top: .5rem;}

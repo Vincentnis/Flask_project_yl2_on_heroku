@@ -1,0 +1,107 @@
+{% extends "main_template.html" %}
+
+
+{% block content %}
+<h1>My profile</h1>
+<form method="post" enctype="multipart/form-data">
+    {{ form.csrf_token }}
+	<img src="{{ current_user.avatar_url }}" alt='Sorry, no image here'/>
+	<p>
+        {{ form.image.label }}<br>
+        {{ form.image(type="file") }}<br>
+        {% for error in form.image.errors %}
+		<p class="alert alert-danger" role="alert">
+			{{ error }}
+		</p>
+		{% endfor %}
+    </p>
+    <p>
+        {{ form.email.label }}<br>
+        {{ form.email(class="form-control", type="email") }}<br>
+        {% for error in form.email.errors %}
+		<p class="alert alert-danger" role="alert">
+			{{ error }}
+		</p>
+		{% endfor %}
+    </p>
+	{% if message %}
+	<p class="alert alert-danger" role="alert">{{ message }}</p>
+	{% endif %}
+    <p>
+        {{ form.surname.label }}<br>
+        {{ form.surname(class="form-control") }}<br>
+        {% for error in form.surname.errors %}
+		<p class="alert alert-danger" role="alert">
+			{{ error }}
+		</p>
+		{% endfor %}
+    </p>
+    <p>
+        {{ form.name.label }}<br>
+        {{ form.name(class="form-control") }}<br>
+        {% for error in form.name.errors %}
+		<p class="alert alert-danger" role="alert">
+			{{ error }}
+		</p>
+		{% endfor %}
+    </p>
+    <p>
+        {{ form.age.label }}<br>
+        {{ form.age(class="form-control") }}<br>
+        {% for error in form.age.errors %}
+		<p class="alert alert-danger" role="alert">
+			{{ error }}
+		</p>
+		{% endfor %}
+    </p>
+    <p>
+        {{ form.speciality.label }}<br>
+        {{ form.speciality(class="form-control") }}<br>
+        {% for error in form.speciality.errors %}
+		<p class="alert alert-danger" role="alert">
+			{{ error }}
+		</p>
+		{% endfor %}
+    </p>
+	<p>
+        {{ form.about.label }}<br>
+        {{ form.about(class="form-control") }}<br>
+        {% for error in form.about.errors %}
+		<p class="alert alert-danger" role="alert">
+			{{ error }}
+		</p>
+		{% endfor %}
+    </p>
+	<p>
+        {{ form.password.label }}<br>
+        {{ form.password(class="form-control", type="password") }}<br>
+        {% for error in form.password.errors %}
+		<p class="alert alert-danger" role="alert">
+			{{ error }}
+		</p>
+		{% endfor %}
+    </p>
+    <p>
+        {{ form.password_again.label }}<br>
+        {{ form.password_again(class="form-control", type="password") }}<br>
+        {% for error in form.password_again.errors %}
+		<p class="alert alert-danger" role="alert">
+			{{ error }}
+		</p>
+		{% endfor %}
+    </p>
+	<p>
+        {{ form.check_old_password.label }}<br>
+        {{ form.check_old_password(class="form-control", type="password") }}<br>
+        {% for error in form.check_old_password.errors %}
+		<p class="alert alert-danger" role="alert">
+			{{ error }}
+		</p>
+		{% endfor %}
+    </p>
+	{% if message_for_password %}
+	<p class="alert alert-danger" role="alert">{{ message_for_password }}</p>
+	{% endif %}
+    <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+</form>
+{% endblock %}
