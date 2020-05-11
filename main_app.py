@@ -267,6 +267,7 @@ def reqister():
                           'email': form.email.data, 'about': form.about.data,
                           'password': form.password.data})
         print(resp.__dict__)
+        print(api.__dict__)
         if resp.get('success'):  # если все успешно ==> переходим на страницу авторизации
             return redirect('/login')
         else:
