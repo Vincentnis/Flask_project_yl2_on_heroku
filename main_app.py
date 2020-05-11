@@ -47,7 +47,7 @@ def add_job():
                session.query(Category)]  # список кортежей: (значение, заголовок)
     form.select.choices = choices
     if form.validate_on_submit():  # если валидация прошла успешно(нет ошибок заполнения формы)
-        post('http://localhost:8000/api/jobs',  # POST запрос на добавление работы
+        post('https://yl-flask-alice.herokuapp.com/api/jobs',  # POST запрос на добавление работы
              json={'header': form.header.data, 'requirements': form.requirements.data,
                    'description': form.description.data,
                    'author': current_user.id, 'form': {'choices': choices,  # список доступных значений
@@ -75,13 +75,13 @@ def edit_job(id):
     choices = [(category.id - 1, category.name) for category in categories]
     form.select.choices = choices
     if request.method == "GET":
-        job = get(f'http://localhost:8000/api/jobs/{id}').json()  # получаем информацию о работе
+        job = get(f'https://yl-flask-alice.herokuapp.com/api/jobs/{id}').json()  # получаем информацию о работе
         form.header.data = job['header']  # заносим её в элементы формы
         form.requirements.data = job['requirements']
         form.description.data = job['description']
         form.select.data = job["categories"]
     if form.validate_on_submit():  # если валидация прошла успешно
-        put(f'http://localhost:8000/api/jobs/{id}',  # PUT запрос на изменение информации о работе
+        put(f'https://yl-flask-alice.herokuapp.com/api/jobs/{id}',  # PUT запрос на изменение информации о работе
             json={'header': form.header.data, 'requirements': form.requirements.data,
                   'description': form.description.data,
                   'form': {'choices': choices,
@@ -103,7 +103,7 @@ def delete_job(id):
     user_id = session.query(Jobs).get(id).author
     abort_if_user_id_not_equal_to_current_user_id(user_id,
                                                   current_user.id)  # Проверка того, что работу удаляет её автор
-    delete(f'http://localhost:8000/api/jobs/{id}')  # DELETE запрос на удаление работы
+    delete(f'https://yl-flask-alice.herokuapp.com/api/jobs/{id}')  # DELETE запрос на удаление работы
     return redirect('/')
 
 
@@ -112,7 +112,7 @@ def delete_job(id):
 def edit_profile():
     form = MyProfile()  # форма профиля
     if request.method == "GET":
-        resp = get(f"http://localhost:8000/api/users/{current_user.id}").json().get(
+        resp = get(f"https://yl-flask-alice.herokuapp.com/api/users/{current_user.id}").json().get(
             'user')  # получаем данные по одному пользователюиз ресурса UsersResource
         form.surname.data = resp["surname"]  # заносим данные в форму
         form.name.data = resp["name"]
@@ -132,7 +132,7 @@ def edit_profile():
             """В параметрах url_for файл загруженный из папки(функция upload_filename), 
             имя файла и создание абсолютного путя"""
             avatar_url = str(url_for('upload_filename', filename=filename, _external=True))  # --> url к файлу
-        resp = put(f"http://localhost:8000/api/users/{current_user.id}",  # бновляем данные пользователя
+        resp = put(f"https://yl-flask-alice.herokuapp.com/api/users/{current_user.id}",  # бновляем данные пользователя
                    json={'surname': form.surname.data,
                          'name': form.name.data,
                          'age': form.age.data,
@@ -159,13 +159,13 @@ def messaging(receiver_id):
     form = ChatForm()  # форма чата
     if request.method == "GET":
         session = db_session.create_session()
-        resp = get("http://localhost:8000/api/messages", json={'sender': current_user.id,  # получаем переписку
+        resp = get("https://yl-flask-alice.herokuapp.com/api/messages", json={'sender': current_user.id,  # получаем переписку
                                                                "receiver": receiver_id}).json()
         receiver = session.query(User).get(receiver_id)  # берём модель пользователя для использования аттрибутов
         return render_template("show_chat.html", title="Chat", messages=resp["mes"],
                                form=form, receiver=receiver)
     if form.validate_on_submit():  # если все прошло успешно
-        post("http://localhost:8000/api/messages", json={'sender': current_user.id,
+        post("https://yl-flask-alice.herokuapp.com/api/messages", json={'sender': current_user.id,
                                                          "receiver": receiver_id,
                                                          "text": form.text.data})  # POST запрос на добавление работы
         return redirect('#')
@@ -179,16 +179,16 @@ def edit_message(message_id):
     form = ChatForm()  # форма чата
     form.submit.label.text = "Edit"  # меняю текст кнопки
     if request.method == "GET":
-        resp = get(f"http://localhost:8000/api/messages/{message_id}").json()  # получаем сообщение
+        resp = get(f"https://yl-flask-alice.herokuapp.com/api/messages/{message_id}").json()  # получаем сообщение
         form.text.data = resp["text"]
-        messages = get("http://localhost:8000/api/messages", json={'sender': current_user.id,  # переписка
+        messages = get("https://yl-flask-alice.herokuapp.com/api/messages", json={'sender': current_user.id,  # переписка
                                                                    "receiver": resp["receiver"]}).json()
         session = db_session.create_session()
         return render_template("show_chat.html", title="Chat", messages=messages["mes"],
                                form=form, receiver=session.query(User).get(resp["receiver"]))
     if form.validate_on_submit():
-        put(f"http://localhost:8000/api/messages/{message_id}", json={'text': form.text.data})  # изменяем сообщение
-        resp = get(f"http://localhost:8000/api/messages/{message_id}").json()  # сообщение
+        put(f"https://yl-flask-alice.herokuapp.com/api/messages/{message_id}", json={'text': form.text.data})  # изменяем сообщение
+        resp = get(f"https://yl-flask-alice.herokuapp.com/api/messages/{message_id}").json()  # сообщение
         return redirect(f'/open_chat/{resp["receiver"]}')  # идём на обработчик чата и id отправителя как параметр
     else:
         print(form.errors)
@@ -197,8 +197,8 @@ def edit_message(message_id):
 @app.route('/delete_message/<int:message_id>')  # обработчик удаления сообщения
 @login_required
 def delete_message(message_id):
-    resp = get(f"http://localhost:8000/api/messages/{message_id}").json()  # сообщение
-    delete(f"http://localhost:8000/api/messages/{message_id}")  # даляем сообщение
+    resp = get(f"https://yl-flask-alice.herokuapp.com/api/messages/{message_id}").json()  # сообщение
+    delete(f"https://yl-flask-alice.herokuapp.com/api/messages/{message_id}")  # даляем сообщение
     return redirect(f'/open_chat/{resp["receiver"]}')  # идём на обработчик чата и id отправителя как параметр
 
 
@@ -216,7 +216,7 @@ def chats():
 @app.route('/profile/<int:user_id>', methods=['GET'])  # обработчик для просмотра профиля пользователя
 def view_profile(user_id):
     form = MyProfile()
-    resp = get(f"http://localhost:8000/api/users/{user_id}").json().get('user')  # получение данных пользователя
+    resp = get(f"https://yl-flask-alice.herokuapp.com/api/users/{user_id}").json().get('user')  # получение данных пользователя
     if resp:  # заполнение формы
         form.surname.data = resp["surname"]
         form.name.data = resp["name"]
@@ -261,7 +261,7 @@ def login():
 def reqister():
     form = RegisterForm()  # форма
     if form.validate_on_submit():  # При успешной валидации отправляем данные и регистрируем пользователя
-        resp = post('http://localhost:8000/api/users',
+        resp = post('https://yl-flask-alice.herokuapp.com/api/users',
                     json={'surname': form.surname.data, 'name': form.name.data,
                           'age': form.age.data, 'speciality': form.speciality.data,
                           'email': form.email.data, 'about': form.about.data,
