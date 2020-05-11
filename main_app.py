@@ -15,6 +15,8 @@ from tests import abort_if_user_id_not_equal_to_current_user_id, \
     abort_if_job_not_found  # тестирующие функции
 from rest_api.messages_resources import chats_already_exists  # функция для ресурса сообщений(чатов)
 
+
+db_session.global_init("db/work_db.sqlite")  # создаем движок и подкление к бд
 app = Flask(__name__)  # приложение
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'  # секретный ключ для csrf токена
 app.config['UPLOAD_FOLDER'] = 'static\img\\'  # папка куда будут загружаться картинки пользователей
@@ -273,7 +275,6 @@ def reqister():
 
 
 def main():
-    db_session.global_init("db/work_db.sqlite")  # создаем движок и подкление к бд
     api.add_resource(users_resources.UsersListResource, '/api/users')  # ресурс Пользователей
     api.add_resource(users_resources.UsersResource, '/api/users/<int:user_id>')  # ресурс Пользователя
     api.add_resource(jobs_resources.JobsListResource, '/api/jobs')  # ресурс Работ
