@@ -52,7 +52,7 @@ class UsersListResource(Resource):  # ресурс для списка рабо�
                     speciality=args['speciality'],
                     email=args['email'],
                     about=args['about'],
-                    avatar_url='http://127.0.0.1:8000/profile/nonavatar.jpg'
+                    avatar_url='https://yl-flask-alice.herokuapp.com/profile/nonavatar.jpg'
                     )
         user.set_password(args['password'])  # добавление захешированного пароля
         session.add(user)
