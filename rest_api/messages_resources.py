@@ -24,7 +24,7 @@ class MessagesResource(Resource):
         user1 = session.query(User).get(message.receiver)
         chats = chats_already_exists(user.chats)  # наши чаты из строкового формата в двумерный массив
         chats1 = chats_already_exists(user1.chats)
-        messages = get("http://localhost:8000/api/messages", json={'sender': message.sender,
+        messages = get("https://yl-flask-alice.herokuapp.com/api/messages", json={'sender': message.sender,
                                                                    "receiver": message.receiver}).json()["mes"]
 
         for i in range(len(messages)):  # проходим по сообщениям
