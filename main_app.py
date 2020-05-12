@@ -19,7 +19,7 @@ from rest_api.messages_resources import chats_already_exists  # функция �
 
 app = Flask(__name__)  # приложение
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'  # секретный ключ для csrf токена
-app.config['UPLOAD_FOLDER'] = 'static\img\\'  # папка куда будут загружаться картинки пользователей
+app.config['UPLOAD_FOLDER'] = 'static/img/'  # папка куда будут загружаться картинки пользователей
 login_manager = LoginManager()
 login_manager.init_app(app)
 api = Api(app)
@@ -142,6 +142,7 @@ def edit_profile():
             """В параметрах url_for файл загруженный из папки(функция upload_filename), 
             имя файла и создание абсолютного путя"""
             avatar_url = str(url_for('upload_filename', filename=filename, _external=True))  # --> url к файлу
+            print(avatar_url)
         resp = put(f"https://yl-flask-alice.herokuapp.com/api/users/{current_user.id}",  # бновляем данные пользователя
                    json={'surname': form.surname.data,
                          'name': form.name.data,
