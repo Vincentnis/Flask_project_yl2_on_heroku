@@ -210,36 +210,36 @@ def edit_message(message_id):
 def delete_message(message_id):
     resp = get(f"https://yl-flask-alice.herokuapp.com/api/messages/{message_id}").json()  # сообщение
     session = db_session.create_session()
-        message = session.query(Message).get(message_id)
-        user = session.query(User).get(message.sender)
-        user1 = session.query(User).get(message.receiver)
-        chats = chats_already_exists(user.chats)  # наши чаты из строкового формата в двумерный массив
-        chats1 = chats_already_exists(user1.chats)
-        messages = get("https://yl-flask-alice.herokuapp.com/api/messages", json={'sender': message.sender,
+    message = session.query(Message).get(message_id)
+    user = session.query(User).get(message.sender)
+    user1 = session.query(User).get(message.receiver)
+    chats = chats_already_exists(user.chats)  # наши чаты из строкового формата в двумерный массив
+    chats1 = chats_already_exists(user1.chats)
+    messages = get("https://yl-flask-alice.herokuapp.com/api/messages", json={'sender': message.sender,
                                                                    "receiver": message.receiver}).json()["mes"]
 
-        for i in range(len(messages)):  # проходим по сообщениям
-            if messages[i][0] == message_id and i == len(messages) - 1:  # если это последнее сообщение
-                if len(messages) == 1:
-                    for j in range(len(chats)):
-                        if chats[j].split(", ")[1] == str(message_id):
-                            chats.pop(j)  # удаляем чат
-                            break
-                    for j in range(len(chats1)):
-                        if chats1[j].split(", ")[1] == str(message_id):
-                            chats1.pop(j)
-                            break
-                else:
-                    for j in range(len(chats)):
-                        if chats[j].split(", ")[1] == str(message_id):
-                            chats[j] = f'{chats[j].split(", ")[0]}, {str(messages[i - 1][0])}'
-                            break  # берём id предпоследнего
-                    for j in range(len(chats1)):
-                        if chats1[j].split(", ")[1] == str(message_id):
-                            chats1[j] = f'{chats1[j].split(", ")[0]}, {str(messages[i - 1][0])}'
-                            break
-            user.chats = ';'.join(chats)
-            user1.chats = ';'.join(chats1)
+    for i in range(len(messages)):  # проходим по сообщениям
+        if messages[i][0] == message_id and i == len(messages) - 1:  # если это последнее сообщение
+            if len(messages) == 1:
+                for j in range(len(chats)):
+                    if chats[j].split(", ")[1] == str(message_id):
+                        chats.pop(j)  # удаляем чат
+                        break
+                for j in range(len(chats1)):
+                    if chats1[j].split(", ")[1] == str(message_id):
+                        chats1.pop(j)
+                        break
+            else:
+                for j in range(len(chats)):
+                    if chats[j].split(", ")[1] == str(message_id):
+                        chats[j] = f'{chats[j].split(", ")[0]}, {str(messages[i - 1][0])}'
+                        break  # берём id предпоследнего
+                for j in range(len(chats1)):
+                    if chats1[j].split(", ")[1] == str(message_id):
+                        chats1[j] = f'{chats1[j].split(", ")[0]}, {str(messages[i - 1][0])}'
+                        break
+        user.chats = ';'.join(chats)
+        user1.chats = ';'.join(chats1)
         session.delete(message)
         session.commit()  # удаляем сообщение
     return redirect(f'/open_chat/{resp["receiver"]}')  # идём на обработчик чата и id отправителя как параметр
