@@ -260,8 +260,6 @@ def login():
 @app.route('/register', methods=['GET', 'POST'])  # обработчик регистрации
 def reqister():
     form = RegisterForm()  # форма
-    requests = request.args.get("name", None)
-    return jsonify({"name": requests})
     if form.validate_on_submit():  # При успешной валидации отправляем данные и регистрируем пользователя
         resp = post('https://yl-flask-alice.herokuapp.com/api/users',
                     json={'surname': form.surname.data, 'name': form.name.data,
@@ -270,6 +268,7 @@ def reqister():
                           'password': form.password.data})
         print(resp.__dict__)
         print(api.__dict__)
+        print(app.__dict__)
         if resp.get('success'):  # если все успешно ==> переходим на страницу авторизации
             return redirect('/login')
         else:
