@@ -285,5 +285,8 @@ def reqister():
             return render_template('register_page.html', title='Registration', form=form,
                                    message=resp['message'])
     return render_template('register_page.html', title='Registration', form=form)
-app.run(port=8001, host='127.0.0.1')  # запуск приложения
+def main():              
+    app.run(port=8001, host='127.0.0.1')  # запуск приложения
 
+if __name__ == '__main__':
+    main()
