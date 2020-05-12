@@ -271,20 +271,19 @@ def login():
 def reqister():
     form = RegisterForm()  # форма
     if form.validate_on_submit():  # При успешной валидации отправляем данные и регистрируем пользователя
+        print(messages_resources.MessagesResource.__dict__)
         resp = post('https://yl-flask-alice.herokuapp.com/api/users',
                     json={'surname': form.surname.data, 'name': form.name.data,
                           'age': form.age.data, 'speciality': form.speciality.data,
                           'email': form.email.data, 'about': form.about.data,
-                          'password': form.password.data})
-        print(resp.__dict__)
-        print(api.__dict__)
-        print(app.__dict__)
+                          'password': form.password.data}).json()
         if resp.get('success'):  # если все успешно ==> переходим на страницу авторизации
             return redirect('/login')
         else:
             return render_template('register_page.html', title='Registration', form=form,
                                    message=resp['message'])
     return render_template('register_page.html', title='Registration', form=form)
+
 def main():              
     app.run(port=8001, host='127.0.0.1')  # запуск приложения
 
