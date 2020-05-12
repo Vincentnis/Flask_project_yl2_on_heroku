@@ -16,13 +16,7 @@ from tests import abort_if_user_id_not_equal_to_current_user_id, \
 from rest_api.messages_resources import chats_already_exists  # функция для ресурса сообщений(чатов)
 
 
-db_session.global_init("db/work_db.sqlite")  # создаем движок и подкление к бд
-app = Flask(__name__)  # приложение
-app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'  # секретный ключ для csrf токена
-app.config['UPLOAD_FOLDER'] = 'static\img\\'  # папка куда будут загружаться картинки пользователей
-login_manager = LoginManager()
-login_manager.init_app(app)
-api = Api(app)
+
 
 
 @login_manager.user_loader
@@ -277,17 +271,21 @@ def reqister():
     return render_template('register_page.html', title='Registration', form=form)
 
 
-def main():
-    api.add_resource(users_resources.UsersListResource, '/api/users')  # ресурс Пользователей
-    api.add_resource(users_resources.UsersResource, '/api/users/<int:user_id>')  # ресурс Пользователя
-    api.add_resource(jobs_resources.JobsListResource, '/api/jobs')  # ресурс Работ
-    api.add_resource(jobs_resources.JobsResource, '/api/jobs/<int:job_id>')  # ресурс Работы
-    api.add_resource(messages_resources.MessagesListResource, '/api/messages')  # ресурс Сообщений
-    api.add_resource(messages_resources.MessagesResource, '/api/messages/<int:message_id>')  # ресурс  Сообщения
-    print(api.__dict__)
-    print(app.__dict__)
-    app.run(port=8000, host='127.0.0.1')  # запуск приложения
 
 
-if __name__ == '__main__':
-    main()
+app = Flask(__name__)  # приложение
+app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'  # секретный ключ для csrf токена
+app.config['UPLOAD_FOLDER'] = 'static\img\\'  # папка куда будут загружаться картинки пользователей
+login_manager = LoginManager()
+login_manager.init_app(app)
+api = Api(app)
+db_session.global_init("db/work_db.sqlite")  # создаем движок и подкление к бд
+api.add_resource(users_resources.UsersListResource, '/api/users')  # ресурс Пользователей
+api.add_resource(users_resources.UsersResource, '/api/users/<int:user_id>')  # ресурс Пользователя
+api.add_resource(jobs_resources.JobsListResource, '/api/jobs')  # ресурс Работ
+api.add_resource(jobs_resources.JobsResource, '/api/jobs/<int:job_id>')  # ресурс Работы
+api.add_resource(messages_resources.MessagesListResource, '/api/messages')  # ресурс Сообщений
+api.add_resource(messages_resources.MessagesResource, '/api/messages/<int:message_id>')  # ресурс  Сообщения
+print(api.__dict__)
+print(app.__dict__)
+app.run()  # запуск приложения
