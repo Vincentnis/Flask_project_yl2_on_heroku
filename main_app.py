@@ -284,6 +284,8 @@ def main():
     api.add_resource(jobs_resources.JobsResource, '/api/jobs/<int:job_id>')  # ресурс Работы
     api.add_resource(messages_resources.MessagesListResource, '/api/messages')  # ресурс Сообщений
     api.add_resource(messages_resources.MessagesResource, '/api/messages/<int:message_id>')  # ресурс  Сообщения
+    print(api.__dict__)
+    print(app.__dict__)
     app.run(port=8000, host='127.0.0.1')  # запуск приложения
 
 
